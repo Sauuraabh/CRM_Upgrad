@@ -32,13 +32,13 @@ isAdmin = async (req, res, next) => {
     } else {
         return res.status(403).send({
             message: "Require admin role to access this feature"
-        })
+        });
     }
 }
 
 const authCheck = {
     verifyToken: verifyToken,
-    verifyToken: isAdmin
+    isAdmin: isAdmin
 }
 
 module.exports = authCheck;
