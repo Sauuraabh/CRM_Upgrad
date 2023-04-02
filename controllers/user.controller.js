@@ -6,7 +6,19 @@ const objectConverter = require(`../utils/objectConverter`)
 
 exports.findAll = async (req, res) => {
     try {
-        const users = await User.find();
+        let userQuery = {};
+        let userTypeReq = req.query.userType;
+        let userStatusReq = req.query.userStatus;
+
+        if(userTypeReq) {
+            userQuery.userType = userTypeReq;
+        }
+
+        if(userStatusReq) {
+            userQuery.userStatus = userStatusReq;
+        }
+
+        const users = await User.find(userQuery);
         res.status(200).send(objectConverter.userResponse(users));
     }catch(err) {
         console.log(`Error fetching up all users ${err}`);
