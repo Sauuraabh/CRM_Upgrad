@@ -36,9 +36,37 @@ isAdmin = async (req, res, next) => {
     }
 }
 
+checkUserType = async (req, res, next) => {
+    const loggedUser = await User.findOne({
+        userId: req.userId
+    })
+    
+    const userToUpdate = await User.findOne({
+        userId: req.params.id
+    })
+    
+    if(loggedUser && loggedUser.userType == "ADMIN") {
+        next();    
+    } else if(loggedUser.userType == "ENGINEER" || loggedUser.userType == "HOMEMAKER") {
+        console.log(req.userId, "   ", loggedUser.userId)
+        if(loggedUser.userId == userToUpdate.userId) {
+            next();
+        } else {
+            return res.status(403).send({
+                message: "You are not the owner"
+            });
+        }
+    } else {
+        return res.status(403).send({
+            message: "Require admin role to access this feature"
+        });
+    }
+}
+
 const authCheck = {
     verifyToken: verifyToken,
-    isAdmin: isAdmin
+    isAdmin: isAdmin,
+    checkUserType: checkUserType
 }
 
 module.exports = authCheck;
