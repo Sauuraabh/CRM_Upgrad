@@ -5,14 +5,14 @@ const User = require(`../models/user.model`);
 verifyToken = (req, res, next) => {
     let token = req.headers['x-token-access'];
 
-    if(!token) {
+    if (!token) {
         return res.status(403).send({
             message: "No token provided."
         });
     }
 
     jwt.verify(token, config.secret, (err, decoded) => {
-        if(err) {
+        if (err) {
             return res.status(401).send({
                 message: "Unauthorised"
             })
@@ -26,9 +26,9 @@ isAdmin = async (req, res, next) => {
     const user = await User.findOne({
         userId: req.userId
     })
-    
-    if(user && user.userType == "ADMIN") {
-        next();    
+
+    if (user && user.userType == "ADMIN") {
+        next();
     } else {
         return res.status(403).send({
             message: "Require admin role to access this feature"
@@ -39,17 +39,12 @@ isAdmin = async (req, res, next) => {
 checkUserType = async (req, res, next) => {
     const loggedUser = await User.findOne({
         userId: req.userId
-    })
-    
-    const userToUpdate = await User.findOne({
-        userId: req.params.id
-    })
-    
-    if(loggedUser && loggedUser.userType == "ADMIN") {
-        next();    
-    } else if(loggedUser.userType == "ENGINEER" || loggedUser.userType == "HOMEMAKER") {
-        console.log(req.userId, "   ", loggedUser.userId)
-        if(loggedUser.userId == userToUpdate.userId) {
+    });
+
+    if (loggedUser && loggedUser.userType == "ADMIN") {
+        next();
+    } else if (loggedUser.userType == "ENGINEER" || loggedUser.userType == "HOMEMAKER") {
+        if (loggedUser.userId == req.params.id) {
             next();
         } else {
             return res.status(403).send({

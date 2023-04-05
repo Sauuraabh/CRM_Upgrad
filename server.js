@@ -22,6 +22,7 @@ db.on(`error`, () => {
 
 require(`./routes/auth.route`)(app);
 require(`./routes/user.route`)(app);
+require(`./routes/ticket.route`)(app);
 
 app.listen(serverConfig.PORT, () => {
     console.log(`Server is running on PORT ${serverConfig.PORT}`)
