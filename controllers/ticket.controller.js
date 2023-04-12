@@ -2,7 +2,8 @@ const Ticket = require(`../models/ticket.model`);
 const User = require(`../models/user.model`)
 const objectConverter = require(`../utils/objectConverter`);
 const CONSTANTS = require(`../utils/constants`);
-const constants = require("../utils/constants");
+const constants = require(`../utils/constants`);
+const sendEmail = require(`../utils/NotificationClient`);
 
 exports.createTicket = async (req, res) => {
     const ticketObj = {
@@ -29,8 +30,15 @@ exports.createTicket = async (req, res) => {
             await user.save();
             engineer.ticketsAssigned.push(ticket._id);
             await engineer.save();
-        }
+
+        var content = `Ticket with id: ${ticket._id} is created by ${user.userId} : ${ticket.description}`;
+        var subject = `Ticket "${ticket.title}" created.`;
+        var emails = `${user.email}, ${engineer.email}`;
+        sendEmail(ticket._id, subject, content, emails, user.userId);
+        
         res.status(200).send(objectConverter.ticketResponse(ticket));
+        }
+
     } catch (err) {
         console.log(`Error while ticket creation`, err)
         res.send(500).send({
