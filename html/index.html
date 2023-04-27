@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Application</title>
+    <style>
+    header{
+        background: grey;
+    }
+    .content-container{
+        background: lightgray;
+        display: flex;
+        flex-flow: row wrap;
+    }
+    .navbar{
+        width:10%;
+        background: white;
+    }
+    .content{
+        background: lightgray;
+        flex-grow: 1;
+    }
+    .form{
+        background: lightblue;
+        width:25%;
+    }
+    footer{
+        background: black;
+        color: white;
+    }
+    </style>
+</head>
+<body>
+    <header>CRM</header>
+    <div class="content-container">
+        <div class="navbar">
+            <ul class="navbar-list">
+                <li>Home</li>
+                <li>Profile</li>
+                <li>Message</li>
+                <li>Setting</li>
+            </ul>
+        </div>
+        <div class="content">Content</div>
+        <div class="form">Forms</div>
+    </div>
+    <footer>copyright CRM</footer>
+</body>
+</html>
